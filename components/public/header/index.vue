@@ -6,7 +6,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col>
+      <el-col class="shaow">
         <search-bar/>
       </el-col>
     </el-row>

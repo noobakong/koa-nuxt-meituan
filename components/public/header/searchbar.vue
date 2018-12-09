@@ -53,9 +53,9 @@
       </el-col>
       <el-col :span="6" class="right">
         <ul class="security">
-          <li><i class="refund"><p class="txt">吃了退</p></i></li>
-          <li><i class="single"><p class="txt">不满意自杀</p></i></li>
-          <li><i class="refund"><p class="txt">过期不退</p></i></li>
+          <li><i class="refund"></i><p class="txt">吃了退</p></li>
+          <li><i class="single"></i><p class="txt">不满意自杀</p></li>
+          <li><i class="refund"></i><p class="txt">过期不退</p></li>
         </ul>
       </el-col>
     </el-row>

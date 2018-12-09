@@ -1,8 +1,21 @@
 .m-life{
+    .m-life-slider {
+      width: 533px;
+      height: 240px;
+      margin:10px 5px 10px 10px;
+      img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
     .m-life-pic{
-        margin:10px 10px 10px 0;
+        margin:10px 7px 10px 0;
         width:150px;
         height:240px;
+        background: #3f3f3f;
         background:url(//p0.meituan.net/codeman/e473bb428f070321269b23370ff02ba956209.jpg);
         background-size:150px;
     }
@@ -40,7 +53,7 @@
     .m-life-hotel,
     .m-life-music {
       height: 165px;
-      background: url(//p0.meituan.net/codeman/843d7347cb20d945e4bc39b6403f0515182965.png);
+      background: url(//p1.meituan.net/codeman/8cce56c467a17e04f3094d1e455462a0132772.png);
       background-size: 270px;
       background-position: 50%;
       background-repeat: no-repeat;
