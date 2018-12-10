@@ -26,6 +26,7 @@ module.exports = {
       }
     }],
     "vue/mustache-interpolation-spacing": 'off',
-    "vue/html-self-closing": 'off'
+    "vue/html-self-closing": 'off',
+    "vue/max-attributes-per-line": 'off'
   }
 }
