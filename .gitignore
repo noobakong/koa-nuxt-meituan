@@ -79,3 +79,6 @@ dist
 
 # IDE
 .idea
+
+# 钥匙
+server/interface/utils/key.js
