@@ -11,12 +11,13 @@
       </el-option>
     </el-select>
     <!-- 城市下拉 -->
-    <el-select v-model="cvalue" :disabled="!city.length" placeholder="城市">
+    <el-select v-model="cvalue" :disabled="!city.length" placeholder="城市" @change="handleSelect">
       <el-option
         v-for="item in city"
         :key="item.value"
         :label="item.label"
-        :value="item.value">
+        :value="item.value"
+      >
       </el-option>
     </el-select>
     <!-- 城市搜索 -->
@@ -50,7 +51,7 @@ import _ from 'lodash'
         if (status === 200) {
           self.city = city.map((item) => {
             return {
-              value: item.id,
+              value: item.name,
               label: item.name
             }
           })
@@ -90,13 +91,15 @@ import _ from 'lodash'
         }
       },200),
       async handleSelect (item) {
-        this.$store.state.geo.position.city = item.value
+        console.log(item)
+        this.$store.state.geo.position.city = item.value ? item.value : item
         const { status: status3, data: { result } } = await this.$axios.get('/search/hotPlace', {
           params: {
             city: this.$store.state.geo.position.city.replace('市', '')
           }
         })
         this.$store.commit('home/setHotPlace', status3 === 200 ? result : [])
+        this.$router.push('/')
       }
     },
   }

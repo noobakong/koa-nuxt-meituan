@@ -6,10 +6,10 @@
         <a :href="'#city-'+item">{{item}}</a>
       </dd>
     </dl>
-    <dl v-for="item in block" :key="item.title" class="m-categroy-section">
+    <dl v-for="item in blocks" :key="item.title" class="m-categroy-section">
       <dt :id="'city-'+item.title">{{item.title}}</dt>
       <dd>
-        <span v-for="c in item.city" :key="c">{{c}}</span>
+        <span v-for="c in item.city" :key="c" @click="goToPlace(c)">{{c}}</span>
       </dd>
     </dl>
   </div>
@@ -44,11 +44,35 @@ import pyjs from 'js-pinyin'
             d[p].push(item.name)
           }
         })
+        for (let [k,v] of Object.entries(d)) {
+          blocks.push({
+            title:k.toUpperCase(),
+            city:v
+          })
+        }
+        blocks.sort((a,b) => {
+          return a.title.charCodeAt(0) - b.title.charCodeAt(0)
+        })
+
+        self.blocks = blocks
+      }
+    },
+    methods: {
+      async goToPlace(item) {
+        console.log(item)
+        this.$store.state.geo.position.city = item
+        const { status: status3, data: { result } } = await this.$axios.get('/search/hotPlace', {
+          params: {
+            city: this.$store.state.geo.position.city.replace('市', '')
+          }
+        })
+        this.$store.commit('home/setHotPlace', status3 === 200 ? result : [])
+        this.$router.push('/')
       }
     }
   }
 </script>
 
-<style scoped>
-  @import "@/assets/css/changeCity/categroy.scss"
+<style lang="scss">
+  @import "@/assets/css/changeCity/categroy.scss";
 </style>
