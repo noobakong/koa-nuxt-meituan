@@ -66,7 +66,7 @@
       return {
         isFocus: false,
         search: '',
-        hotPlace: this.$store.state.home.hotPlace.slice(0,6),
+        // hotPlace: this.$store.state.home.hotPlace.slice(0,6),
         searchList: []
       }
     },
@@ -76,6 +76,9 @@
       },
       isSearchList() {
         return this.isFocus && this.search
+      },
+      hotPlace () {
+        return this.$store.state.home.hotPlace.slice(0,6)
       }
     },
     methods: {

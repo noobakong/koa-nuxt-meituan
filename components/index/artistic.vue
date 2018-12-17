@@ -1,6 +1,6 @@
 <template>
   <section class="m-istyle">
-    <dl>
+    <dl @mouseover="over">
       <dt>有格调</dt>
       <dd
         :class="{active:kind==='all'}"
@@ -49,30 +49,72 @@ export default {
     return {
       kind: 'all',
       list: {
-        all: [{
-          title: '大虾啊啊啊',
-          pos: '李想4人餐，提供免费WiFi',
-          price: 221,
-          img: '//p0.meituan.net/msmerchant/4c295c4d7974bbb163e0778aae993421107668.jpg@368w_208h_1e_1c'
-        }],
-        part: [{
-          title: '约会聚餐',
-          pos: '李想4人餐，提供免费WiFi',
-          price: 221,
-          img: '//p0.meituan.net/msmerchant/4c295c4d7974bbb163e0778aae993421107668.jpg@368w_208h_1e_1c'
-        }],
-        spa: [{
-          title: 'SPAAAAAA',
-          pos: '李想4人餐，提供免费WiFi',
-          price: 221,
-          img: '//p0.meituan.net/msmerchant/4c295c4d7974bbb163e0778aae993421107668.jpg@368w_208h_1e_1c'
-        }]
+        all: [],
+        part: [],
+        spa: [],
+        movie: [],
+        travel: []
       }
     }
   },
   computed: {
     cur () {
       return this.list[this.kind]
+    }
+  },
+    async mounted () {
+    let self = this
+    let {status, data: {count,pois}} = await this.$axios.get('/search/resultByKeyWords',{
+          params: {
+            keyword: '景点',
+            city:this.$store.state.geo.position.city
+          }
+        })
+        if (status === 200&&count>0) {
+          let res = pois.filter(item => item.photos.length).map(item => {
+            return {
+              title: item.name,
+              pos: item.type.split(';')[0],
+              price: item.biz_ext.cost || '暂无',
+              img:item.photos[0].url,
+              url:'//abc.com'
+            }
+          })
+          this.list[this.kind] =  res.slice(0,9)
+        } else {
+          this.list[this.kind] = []
+        }
+  },
+  methods: {
+    over: async function (e) {
+      console.log(this)
+      let dom = e.target
+      let tag = dom.tagName.toLowerCase()
+
+      if (tag === 'dd') {
+        this.kind = dom.getAttribute('kind')
+        let keyword = dom.getAttribute('keyword')
+        let {status, data: {count,pois}} = await this.$axios.get('/search/resultByKeyWords',{
+          params: {
+            keyword,
+            city:this.$store.state.geo.position.city
+          }
+        })
+        if (status === 200&&count>0) {
+          let res = pois.filter(item => item.photos.length).map(item => {
+            return {
+              title: item.name,
+              pos: item.type.split(';')[0],
+              price: item.biz_ext.cost || '暂无',
+              img:item.photos[0].url,
+              url:'//abc.com'
+            }
+          })
+          this.list[this.kind] =  res.slice(0,9)
+        } else {
+          this.list[this.kind] = []
+        }
+      }
     }
   }
 };

@@ -55,9 +55,9 @@ router.get('/city', async (ctx) => {
 
 // 获取热门城市数据
 router.get('/hotCity', async (ctx) => {
-  let { status, data: { hotCity } } = await axios.get(`http://cp-tools.cn/geo/hotCity?sign=${key}`)
+  let { status, data: { hots } } = await axios.get(`http://cp-tools.cn/geo/hotCity?sign=${key}`)
   ctx.body = {
-    hotCity: status === 200 ? hotCity : []
+    hots: status === 200 ? hots : []
   }
 })
 
