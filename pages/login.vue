@@ -64,7 +64,7 @@
             if (data && data.code === 0) {
               location.href = '/';
             } else {
-              that.error = data.msg.message;
+              that.error = data.msg
             }
           } else {
             that.error = `服务器出错`;
