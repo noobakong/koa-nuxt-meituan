@@ -18,16 +18,20 @@
           <!-- 热门推荐 -->
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, index) in hotPlace" :key="index">{{item.name}}</dd>
+            <dd v-for="(item, index) in hotPlace" :key="index">
+              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{item.name}}</a>
+            </dd>
           </dl>
           <!-- 搜索列表 -->
           <dl v-if="isSearchList" class="searchList">
-            <dd v-for="(item, index) in searchList" :key="index">{{item.name}}</dd>
+            <dd v-for="(item, index) in searchList" :key="index">
+              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{item.name}}</a>
+            </dd>
           </dl>
         </div>
         <!-- 搜索框下的推荐 -->
         <p class="suggest">
-          <a v-for="(item, index) in hotPlace" :key="index">{{item.name}}</a>
+          <a v-for="(item, index) in hotPlace" :href="'/products?keyword='+encodeURIComponent(item.name)" :key="index">{{item.name}}</a>
         </p>
         <!-- 导航 -->
         <ul class="nav">
