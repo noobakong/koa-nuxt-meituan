@@ -2,7 +2,7 @@
   <div
     :id="id"
     :style="{width:width+'px',height:height+'px',margin:'34px auto'}"
-    class="m-map"></div>
+  ></div>
 </template>
 
 <script>
@@ -26,7 +26,7 @@
     data () {
       return {
         id: `map`,
-        key: '435d1f4aaccb0077e46c32955f5b7641'
+        key: '435d1f4aaccb0077e46c32955f5b7641',
       }
     },
     watch: {
@@ -38,7 +38,7 @@
     // 需要拿到window对象，只能在挂载后执行
     mounted () {
       this.id = `map${Math.random().toString().slice(4, 6)}`
-
+      var that = this
       window.onmaploaded = () => {
         let map = new window.AMap.Map(this.id, {
           resizeEnable: true,
@@ -62,6 +62,18 @@
       jsapi.charset = 'utf-8'
       jsapi.src = url
       document.head.appendChild(jsapi)
+      window.onscroll = function () {
+          var Map = document.getElementById(that.id)
+          var t = document.documentElement.scrollTop||document.body.scrollTop
+          console.log(t)
+          if (t > 200) {
+            Map.style.position = 'fixed',
+            Map.style.top = '-32px'
+          } else {
+            Map.style.position = 'relative'
+            Map.style.top = '0'
+          }
+        }
     }
   }
 </script>
