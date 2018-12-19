@@ -16,7 +16,6 @@ const store = () => new Vuex.Store({
       const {status,data:{province,city}} = await app.$axios.get('/geo/getPosition')
       // console.log(province ,city)
       commit('geo/setPosition', status === 200 ? { city, province } : { city: '', province: ''})
-
       // 获取首页菜单数据
       const {status:status2, data: {menu}} = await app.$axios.get('geo/menu')
       commit('home/setMenu', status2 === 200 ? menu : [])

@@ -53,13 +53,14 @@
       let keyword = ctx.query.keyword
       // 获取城市
       let city = ctx.store.state.geo.position.city
+      console.log(city)
       let { status, data: { count, pois } } = await ctx.$axios.get('/search/resultByKeywords', {
         params: {
           keyword,
           city
         }
       })
-      console.log(pois)
+      // console.log(pois)
       let { status: status2, data: { areas, types } } = await ctx.$axios.get('/categroy/crumbs', {
         params: {
           city
