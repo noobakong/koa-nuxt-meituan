@@ -36,20 +36,20 @@
     },
     methods: {
       submit: async function() {
-      //   let {status,data:{code,id}}=await this.$axios.post('/order/createOrder',{
-      //     count:this.cart[0].count,
-      //     price:this.cart[0].price,
-      //     id:this.cartNo
-      //   })
-      //   if(status==200&&code===0){
-      //     this.$alert(`恭喜您，已成功下单，订单号:${id}`,'下单成功',{
-      //       confirmButtonText:'确定',
-      //       callback:action=>{
-      //         location.href='/order'
-      //       }
-      //     })
-      //   }
-      //   this.$message.success('下单成功！')
+        let {status,data:{code,id}}=await this.$axios.post('/order/createOrder',{
+          count:this.cart[0].count,
+          price:this.cart[0].price,
+          id:this.cartNo
+        })
+        if(status==200&&code===0){
+          this.$alert(`恭喜您，已成功下单，订单号:${id}`,'下单成功',{
+            confirmButtonText:'确定',
+            callback:action=>{
+              location.href='/order'
+            }
+          })
+        }
+        this.$message.success('下单成功！')
       }
     },
     async asyncData (ctx) {
