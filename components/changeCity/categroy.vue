@@ -67,6 +67,7 @@ import pyjs from 'js-pinyin'
           }
         })
         this.$store.commit('home/setHotPlace', status3 === 200 ? result : [])
+        sessionStorage.setItem('city',item)
         this.$router.push('/')
       }
     }

@@ -4,7 +4,7 @@
       <!-- 产品 -->
       <el-col :span="19">
         <!-- 面包屑 -->
-        <Crumbs :keyword="keyword"/>
+        <!-- <Crumbs :keyword="keyword"/> -->
         <!-- 分类 -->
         <Categroy
           :types="types"
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-  import Crumbs from '@/components/products/crumbs'
+  // import Crumbs from '@/components/products/crumbs'
   import Categroy from '@/components/products/categroy'
   import List from '@/components/products/list'
   import Amap from '@/components/public/map'
 
   export default {
     components: {
-      Crumbs,
+      // Crumbs,
       Categroy,
       List,
       Amap
@@ -51,6 +51,7 @@
     async asyncData (ctx) {
       // get请求获取keyword
       let keyword = ctx.query.keyword
+      console.log(keyword)
       // 获取城市
       let city = ctx.store.state.geo.position.city
       console.log(city)

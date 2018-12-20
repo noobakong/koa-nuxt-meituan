@@ -17,8 +17,12 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <list v-if="login" :list="list"/>
-        <div class="deal-need-login">
+        <List
+          v-if="login"
+          :list="list"/>
+        <div
+          v-else
+          class="deal-need-login">
           <img
             src="//p0.meituan.net/codeman/56a7d5abcb5ce3d90fc91195e5b5856911194.png"
             alt="登录查看">
@@ -76,6 +80,9 @@ export default {
         login: false
       }
     }
+  },
+  mounted() {
+    console.log(this.login)
   }
 }
 </script>

@@ -19,19 +19,22 @@
           <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
             <dd v-for="(item, index) in hotPlace" :key="index">
-              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{item.name}}</a>
+              <a @click.stop="goToLink(item)">{{item.name}}</a>
+              <!-- <nuxt-link :to="{path:'products',query:{keyword:item.name}}">{{item.name}}</nuxt-link> -->
             </dd>
           </dl>
           <!-- 搜索列表 -->
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item, index) in searchList" :key="index">
-              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{item.name}}</a>
+              <!-- <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{item.name}}</a> -->
+              <nuxt-link :to="{path:'products',query:{keyword:item.name}}">{{item.name}}</nuxt-link>
             </dd>
           </dl>
         </div>
         <!-- 搜索框下的推荐 -->
         <p class="suggest">
-          <a v-for="(item, index) in hotPlace" :href="'/products?keyword='+encodeURIComponent(item.name)" :key="index">{{item.name}}</a>
+          <!-- <a v-for="(item, index) in hotPlace" :href="'/products?keyword='+encodeURIComponent(item.name)" :key="index">{{item.name}}</a> -->
+          <router-link v-for="(item, index) in hotPlace" :to="{path:'products',query:{keyword:item.name}}" :key="index">{{item.name}}</router-link>
         </p>
         <!-- 导航 -->
         <ul class="nav">
@@ -86,6 +89,26 @@
       }
     },
     methods: {
+      goToLink(item) {
+        // console.log('11')
+        // let query = {
+        //   keyword:　item.name
+        // }
+        // let path = new String('products').toString()
+        // //对象的拷贝
+        // let newQuery = JSON.parse(JSON.stringify(query));
+        // this.$router
+        // this.$router.push({ path, query: newQuery })
+
+        let newQuery = JSON.parse(JSON.stringify(this.$route.query)); //读取query参数
+        // console.log(newQuery)
+        newQuery.keyword = item.name
+        let routeParam={
+            path: 'products',
+            query: newQuery
+        }
+        this.$router.push(routeParam)
+      },
       handleFocus() {
         this.isFocus = true
       },

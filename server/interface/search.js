@@ -62,7 +62,7 @@ router.get('/products',async (ctx) => {
       product,
       // 根据是否登录返回值
       more: ctx.isAuthenticated() ? more : [],
-      login: ctx.isAuthenticated() ? more : []
+      login: ctx.isAuthenticated()
     }
   } else {
     ctx.body = {

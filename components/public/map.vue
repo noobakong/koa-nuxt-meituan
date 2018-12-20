@@ -74,6 +74,9 @@
             Map.style.top = '0'
           }
         }
+    },
+    destroyed () {
+      window.onscroll=''
     }
   }
 </script>
