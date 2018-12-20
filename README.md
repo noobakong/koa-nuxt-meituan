@@ -1,6 +1,4 @@
-# nuxt-meituan
-
-> 开发记录，简单记录开发过程过程中的一些关键点。
+# vue美团
 
 ## 前期准备
 
@@ -47,7 +45,7 @@ mongoose
 这里充分的使用组件化思想
 
 - 设立两个同级的dom结构，一是父菜单 二是子菜单 不需要重复大量的dom结构
-- 构建良好的数据结构，使得数据能够完美套入模板之中。
+-  构建良好的数据结构，使得数据能够完美套入模板之中。
 
 #### 显示效果实现
 
@@ -218,7 +216,7 @@ await dispatch('core/load')
 
 
 
-## 城市字母分类
+### 城市字母分类
 
 > 我们要时刻考虑怎么利用数据结构和合理使用dom节点使我们项目更简洁，而且易维护
 
@@ -303,4 +301,144 @@ await dispatch('core/load')
 
   数据结构很重要！！！
 
+## 产品展示页
 
+### 面包屑
+
+- element面包屑组件
+- vuex获取城市
+- 父子组件传值keyword获取搜索内容
+
+### 导航条
+
+- 使用两个 dl > dt+dt+dd 的dom结构
+- dd dom结构加入iselect组件
+
+### 产品列表
+
+- dl > dd 放操作导航
+- ul ＞　item组件放详细产品列表
+
+### 地图功能
+
+- 高德地图开放API
+- 生成地图控件
+- 加入地图插件
+
+### 重要点
+
+- 这里获取的数据是在nuxt的 asyncData钩子执行的，他的返回值会和vue的data想结合
+
+- **更改数据json的映射关系很容易改**
+  **页面dom结构很麻烦**
+  **前后端开发的时候，可以不必相互太过依赖**
+  **中间进行一层数据操作转化即可。**
+
+- nuxt ayncData钩子整合数据
+
+  ```js
+      async asyncData (ctx) {
+        // get请求获取keyword
+        let keyword = ctx.query.keyword
+        // 获取城市
+        let city = ctx.store.state.geo.position.city
+        let { status, data: { count, pois } } = await ctx.$axios.get('/search/resultByKeywords', {
+          params: {
+            keyword,
+            city
+          }
+        })
+        console.log(pois)
+        let { status: status2, data: { areas, types } } = await ctx.$axios.get('/categroy/crumbs', {
+          params: {
+            city
+          }
+        })
+        // // 数据映射
+        if (status === 200 && count > 0 && status2 === 200) {
+          return {
+            list: pois.filter(item => item.photos.length).map(item => {
+              return {
+                type: item.type,
+                img: item.photos[0].url,
+                name: item.name,
+                comment: Math.floor(Math.random() * 10000),
+                rate: Number(item.biz_ext.rating),
+                price: Number(item.biz_ext.cost),
+                scene: item.tag,
+                tel: item.tel,
+                status: '可订明日',
+                location: item.location,
+                module: item.type.split(';')[0]
+              }
+            }),
+            keyword,
+            areas: areas.filter(item => item.type !== '').slice(0, 5),
+            types: types.filter(item => item.type !== '').slice(0, 5),
+            point: (pois.find(item => item.location).location || '').split(',')
+          }
+        }
+      }
+  ```
+
+
+**注意：**开发过程中处理大量数据的时候，一定要先把数据简单的过滤一遍，将非法的数据剔除。
+
+## 详情页
+
+### 子组件编写
+
+- crumbs 面包屑
+- summary 概述信息
+- list 套餐列表
+  - item子项组件
+
+### detail主页面
+
+**一些需要注意的地方**
+
+- 数据要先过滤一遍，剔除无效项
+-  客户端拿不到请求参数，只能在服务器中拿到keyword和type，这里在nuxt的asyncData钩子里获取数据
+- asyncData返回的data会和vue中的data做merge
+
+## 购物车
+
+- 安全起见购物车接口使用post
+
+- 点击购买后的流程
+
+  - 客户端通过点击函数createCart函数向服务端请求创建购物车
+
+    - 传入id （mooc数据）和 detail
+
+  - 服务端创建购物车并返回购物车id （cartNo不是上面的id）给客户端
+
+  - 客户端重定向到 cart?id 页面
+
+    - ```js
+      window.location.href = `/cart/?id=${id}`
+      ```
+
+  - page下的cart页面在asyncData钩子函数下通过ssr的方式获得数据
+
+    - 通过传入ctx.query.body的购物车的id值请求 getCart接口获得数据
+    - 在getCart逻辑中，通过查找数据库的id 返回对应的商品数据
+
+  > 点击购买经历了 创建 -》 存库 -》 取库 一系列操作。
+
+
+
+## 订单页
+
+- 编写订单model和订单接口
+  - order模型的创建
+  - `createOrder`和`getOrders`接口的创建
+- 在cart.vue中完善submit方法
+  - 点击请求`createOrder`方法 传入购物车id 商品数量和价格
+  - 服务端根据id查找数据库中的购物车信息，将order数据保存数据库
+  - 跳转到order页面
+- order页面
+  - 使用饿了么tags组件
+  - 点击更改v-modle值 实现切换
+  - asyncData钩子中，请求getOrders接口 获取所有的order，赋值给list和cur
+  - activeNmae和list的改变 都会使cur的数据重新筛选一次
