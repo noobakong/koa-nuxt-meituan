@@ -1,5 +1,7 @@
 # vue美团
 
+![动图展示](https://blog-1257919906.cos.ap-guangzhou.myqcloud.com/project-show/meituan/GIF.gif)
+
 ## 前期准备
 
 nuxt官方脚手架
